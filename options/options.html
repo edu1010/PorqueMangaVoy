@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>PorqueMangaVoy · Opciones</title>
+  <link rel="stylesheet" href="../popup/popup.css">
+  <style>
+    body { width: auto; max-width: 680px; max-height: none; margin: 0 auto; padding: 24px 16px; font-size: 14px; }
+    h1 { font-size: 20px; margin-bottom: 16px; }
+    h2 { font-size: 16px; margin-bottom: 8px; }
+    .card { padding: 16px; }
+    code { background: var(--bg); padding: 2px 5px; border-radius: 4px; word-break: break-all; }
+    ol { padding-left: 20px; }
+    li { margin: 4px 0; }
+    #client-id { width: 100%; }
+  </style>
+</head>
+<body>
+  <h1>📚 PorqueMangaVoy · Opciones</h1>
+
+  <section class="card">
+    <h2>Sincronización entre PCs</h2>
+    <p>Tus series se guardan en el almacenamiento sincronizado del navegador. Si inicias sesión con la misma
+      cuenta de Chrome (o Firefox Sync) en varios PCs y tienes activada la sincronización de extensiones,
+      verás la misma lista en todos.</p>
+    <p class="muted" id="usage"></p>
+    <div class="row">
+      <button id="export">Exportar copia (JSON)</button>
+      <label class="row" style="margin:0">
+        <span><button id="import-btn" type="button">Importar copia…</button></span>
+        <input id="import" type="file" accept="application/json" hidden>
+      </label>
+    </div>
+    <p id="backup-msg"></p>
+  </section>
+
+  <section class="card">
+    <h2>AniList (opcional)</h2>
+    <div id="al-status" class="muted">Comprobando…</div>
+    <details id="al-setup">
+      <summary>Configurar (solo la primera vez, 2 minutos)</summary>
+      <ol>
+        <li>Entra en <a href="https://anilist.co/settings/developer" target="_blank">anilist.co/settings/developer</a> y pulsa «Create New Client».</li>
+        <li>Nombre: el que quieras. En «Redirect URL» pega exactamente: <code id="redirect"></code></li>
+        <li>Copia el <b>Client ID</b> (un número) y pégalo aquí:</li>
+      </ol>
+      <input id="client-id" type="text" inputmode="numeric" placeholder="Client ID de AniList">
+      <p class="muted">En Chrome la Redirect URL depende del ID de la extensión; si la cargas en otro PC sin empaquetar,
+        el ID puede cambiar y tendrás que añadir esa otra URL también.</p>
+    </details>
+    <div class="row">
+      <button id="al-login" class="primary">Conectar con AniList</button>
+      <button id="al-logout" hidden>Desconectar</button>
+    </div>
+    <div class="row" id="al-import-row" hidden>
+      <button id="al-import-manga">Importar mi lista de manga</button>
+      <button id="al-import-anime">Importar mi lista de anime</button>
+    </div>
+    <p id="al-msg"></p>
+  </section>
+
+  <script src="../lib/parser.js"></script>
+  <script src="../lib/store.js"></script>
+  <script src="../lib/anilist.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

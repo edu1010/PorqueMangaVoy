@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>PorqueMangaVoy</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header>
+    <h1>📚 PorqueMangaVoy</h1>
+    <div class="header-actions">
+      <button id="btn-consult" class="ghost" title="Volver a analizar la página">🔍 Consultar</button>
+      <button id="btn-options" class="ghost" title="Opciones">⚙️</button>
+    </div>
+  </header>
+
+  <section id="current" class="card">
+    <p class="muted">Analizando la página…</p>
+  </section>
+
+  <section class="card">
+    <div class="list-head">
+      <h2>Mis series</h2>
+      <select id="filter-kind">
+        <option value="">Todo</option>
+        <option value="manga">Manga</option>
+        <option value="anime">Anime</option>
+      </select>
+    </div>
+    <input id="search" type="search" placeholder="Buscar…">
+    <ul id="list"></ul>
+  </section>
+
+  <template id="tpl-known">
+    <div class="known">
+      <div class="title-row"><span class="kind"></span><strong class="title"></strong></div>
+      <p class="big">Vas por el <span class="unit"></span> <b class="progress"></b></p>
+      <p class="page-info muted"></p>
+      <div class="row">
+        <button class="primary mark">Marcar como leído</button>
+        <button class="dec" title="Restar uno">−1</button>
+        <button class="inc" title="Sumar uno">+1</button>
+      </div>
+      <div class="row small">
+        <label><input type="checkbox" class="auto"> Guardar automáticamente</label>
+        <select class="status">
+          <option value="reading">Leyendo</option>
+          <option value="paused">En pausa</option>
+          <option value="completed">Terminado</option>
+        </select>
+      </div>
+      <div class="row small">
+        <a href="#" class="open-last">Abrir último guardado</a>
+        <span class="anilist"></span>
+      </div>
+      <div class="anilist-results"></div>
+    </div>
+  </template>
+
+  <template id="tpl-new">
+    <div class="new">
+      <p class="muted detected"></p>
+      <label>Título <input class="title" type="text"></label>
+      <div class="row">
+        <label>Tipo
+          <select class="kind">
+            <option value="manga">Manga</option>
+            <option value="anime">Anime</option>
+          </select>
+        </label>
+        <label>Capítulo / episodio <input class="number" type="number" step="any" min="0"></label>
+      </div>
+      <button class="primary track">📖 Estoy leyendo esto</button>
+      <details class="link-existing">
+        <summary>¿Ya la tienes guardada con otro nombre o en otra web?</summary>
+        <div class="row">
+          <select class="existing"></select>
+          <button class="link">Vincular</button>
+        </div>
+      </details>
+    </div>
+  </template>
+
+  <script src="../lib/parser.js"></script>
+  <script src="../lib/store.js"></script>
+  <script src="../lib/anilist.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
