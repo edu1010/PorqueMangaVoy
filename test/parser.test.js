@@ -3,6 +3,18 @@ const assert = require('assert');
 const { parsePage } = require('../lib/parser.js');
 
 const cases = [
+  [{ url: 'https://example.com/one-piece/chapter/12/page/3', title: 'One Piece' },
+    { title: 'One Piece', number: 12, slug: 'one-piece' }],
+  [{ url: 'https://example.com/one-piece/page/13', title: 'One Piece' },
+    { number: null }],
+  [{ url: 'https://example.com/one-piece/page-13', title: 'One Piece' },
+    { number: null }],
+  [{ url: 'https://example.com/one-piece#chapter-13', title: 'One Piece' },
+    { number: 13, slug: 'one-piece' }],
+  [{ url: 'https://example.com/reader/one-piece', title: 'One Piece Chapter 12', h1: 'One Piece Chapter 13' },
+    { number: 13 }],
+  [{ url: 'https://example.com/reader/one-piece', title: 'One Piece', chapterLabel: 'Chapter 14' },
+    { number: 14 }],
   [{ url: 'https://chapmanganato.to/manga-aa951409/chapter-1100', title: 'One Piece Chapter 1100 - Manganato' },
     { title: 'One Piece', number: 1100, kind: 'manga', slug: 'manga-aa951409' }],
   [{ url: 'https://mangasee123.com/read-online/One-Piece-chapter-1100-page-1.html', title: 'One Piece Chapter 1100 | MangaSee' },

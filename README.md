@@ -61,6 +61,30 @@ options/             sincronización, copia de seguridad y AniList
 test/                tests del parser
 ```
 
+## Navegación automática (0.4.0)
+
+Con **Guardar automáticamente** activado, abrir un capítulo posterior de una serie guardada actualiza el progreso y lo envía a AniList si está vinculada y conectada. También detecta cambios sin recarga en URL, título, encabezado y selectores de capítulo/episodio. No necesitas abrir el popup. Pasar a otra página dentro del mismo capítulo no suma capítulos, y volver atrás no reduce el progreso. Se conserva el límite de seguridad de 100 capítulos por salto y no se avanza en series terminadas.
+
+El observador se ejecuta en páginas HTTP/HTTPS y lee únicamente URL, título, metadatos del título, primer encabezado y selector de capítulo. Solo guarda progreso de series ya seguidas. Después de actualizar la extensión, recarga las pestañas de lectura para activar el observador. El navegador puede pedir acceso a los sitios para esta función. Si un lector no expone el número en esos datos, sigue disponible el marcado manual.
+
+## Idiomas (0.3.0)
+
+La interfaz está disponible en español e inglés. El modo automático utiliza español cuando el idioma de la interfaz del navegador es español (incluidas variantes como `es-ES` o `es-MX`); en los demás casos utiliza inglés. En **Opciones → Idioma** puedes elegir **Automático**, **Español** o **English**. La preferencia se guarda en el almacenamiento sincronizado del navegador y se aplica al abrir el popup. No cambia los títulos ni el progreso guardado de tus series.
+
+El selector traduce Opciones, el popup, los mensajes y las fechas. La descripción de la extensión y del atajo en los ajustes del navegador siguen el idioma del navegador.
+
+Validación del idioma: `node test/i18n.test.js`.
+
+## Cambios en 0.2.0
+
+- Reconoce nombres dentro del título, encabezado y slug de la URL, incluyendo fichas como `one-piece-s2` y títulos como `➤ Leer manga One Piece`. Compara palabras completas y distingue manga de anime; no elige entre coincidencias parciales empatadas.
+- El popup muestra conexión de AniList, series sin vincular y envíos pendientes. Cada serie vinculada muestra la fecha del último envío confirmado o su error.
+- «Sincronizar ahora» envía el progreso local de todas las series vinculadas a AniList; también hay un botón por serie. Para traer la lista de AniList sigue disponible la importación en Opciones.
+- Los capítulos detectados se envían automáticamente, incluidos cambios de URL sin recarga. Los fallos se conservan y se reintentan al abrir otro capítulo o pulsar Sincronizar. Los envíos se procesan en orden y los estados en pausa se respetan.
+- Nuevo icono de libro con marcador e iconos vectoriales de manga, anime y opciones.
+
+Validación local: `node test/parser.test.js` y `node test/sync.test.js` (API de AniList simulada, sin modificar una cuenta real).
+
 ## Próximos pasos posibles
 
 - MyAnimeList como segundo proveedor.

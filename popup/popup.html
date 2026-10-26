@@ -7,12 +7,17 @@
 </head>
 <body>
   <header>
-    <h1>📚 PorqueMangaVoy</h1>
+    <h1><img src="../icons/logo.svg" class="brand" alt=""> PorqueMangaVoy</h1>
     <div class="header-actions">
-      <button id="btn-consult" class="ghost" title="Volver a analizar la página">🔍 Consultar</button>
-      <button id="btn-options" class="ghost" title="Opciones">⚙️</button>
+      <button id="btn-consult" class="ghost icon-label" title="Volver a analizar la página"><img src="../icons/search.svg" class="icon" alt="">Consultar</button>
+      <button id="btn-options" class="ghost" title="Opciones" aria-label="Opciones"><img src="../icons/settings.svg" class="icon" alt=""></button>
     </div>
   </header>
+
+  <section class="card sync-panel" aria-label="Sincronización con AniList">
+    <div><strong>AniList</strong><p id="sync-status" role="status">Comprobando conexión…</p></div>
+    <button id="btn-sync">Sincronizar</button>
+  </section>
 
   <section id="current" class="card">
     <p class="muted">Analizando la página…</p>
@@ -20,7 +25,7 @@
 
   <section class="card">
     <div class="list-head">
-      <h2>Mis series</h2>
+      <h2 class="icon-label"><img src="../icons/manga.svg" class="icon" alt="">Mis series</h2>
       <select id="filter-kind">
         <option value="">Todo</option>
         <option value="manga">Manga</option>
@@ -70,7 +75,7 @@
         </label>
         <label>Capítulo / episodio <input class="number" type="number" step="any" min="0"></label>
       </div>
-      <button class="primary track">📖 Estoy leyendo esto</button>
+      <button class="primary track">Estoy leyendo esto</button>
       <details class="link-existing">
         <summary>¿Ya la tienes guardada con otro nombre o en otra web?</summary>
         <div class="row">
@@ -81,6 +86,7 @@
     </div>
   </template>
 
+  <script src="../lib/i18n.js"></script>
   <script src="../lib/parser.js"></script>
   <script src="../lib/store.js"></script>
   <script src="../lib/anilist.js"></script>

@@ -22,7 +22,7 @@
 * { box-sizing: border-box; }
 body {
   margin: 0;
-  width: 360px;
+  width: 400px;
   max-height: 580px;
   font: 13px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif;
   background: var(--bg);
@@ -77,3 +77,16 @@ summary { cursor: pointer; color: var(--muted); }
 .anilist-results img { width: 28px; height: 40px; object-fit: cover; border-radius: 3px; }
 .toast { color: var(--ok); font-size: 12px; margin-top: 6px; }
 .error { color: #d0453c; font-size: 12px; margin-top: 6px; }
+h1 { display: flex; align-items: center; gap: 7px; }
+.brand { width: 28px; height: 28px; flex-shrink: 0; filter: drop-shadow(0 2px 3px #5954d62b); }
+.icon-label { display: inline-flex; align-items: center; gap: 6px; }
+.icon { width: 20px; height: 20px; vertical-align: middle; flex-shrink: 0; }
+#list .name .icon { margin-right: 6px; }
+.sync-panel { display: flex; align-items: center; justify-content: space-between; gap: 12px; border-left: 3px solid var(--accent); }
+.sync-panel p { font-size: 11px; color: var(--muted); margin: 3px 0 0; }
+.sync-panel button { flex-shrink: 0; font-size: 11px; }
+.anilist { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; width: 100%; }
+.big { padding: 12px 0; }
+.big b { font-size: 30px; }
+button:disabled { opacity: .6; cursor: default; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }

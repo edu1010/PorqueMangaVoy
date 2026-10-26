@@ -13,13 +13,26 @@
     ol { padding-left: 20px; }
     li { margin: 4px 0; }
     #client-id { width: 100%; }
+    h1 .brand { width: 36px; height: 36px; }
+    h2 { display: flex; align-items: center; gap: 9px; }
   </style>
 </head>
 <body>
-  <h1>📚 PorqueMangaVoy · Opciones</h1>
+  <h1><img src="../icons/logo.svg" class="brand" alt=""> PorqueMangaVoy · Opciones</h1>
 
   <section class="card">
-    <h2>Sincronización entre PCs</h2>
+    <h2 id="language-label">Idioma</h2>
+    <select id="language" aria-labelledby="language-label">
+      <option value="auto">Automático (idioma del navegador)</option>
+      <option value="es">Español</option>
+      <option value="en">English</option>
+    </select>
+    <p class="muted">Español si el navegador está en español; inglés en los demás casos.</p>
+    <p id="language-msg" role="status"></p>
+  </section>
+
+  <section class="card">
+    <h2><img src="../icons/sync.svg" class="icon" alt=""> Sincronización entre PCs</h2>
     <p>Tus series se guardan en el almacenamiento sincronizado del navegador. Si inicias sesión con la misma
       cuenta de Chrome (o Firefox Sync) en varios PCs y tienes activada la sincronización de extensiones,
       verás la misma lista en todos.</p>
@@ -35,7 +48,7 @@
   </section>
 
   <section class="card">
-    <h2>AniList (opcional)</h2>
+    <h2><img src="../icons/anime.svg" class="icon" alt=""> AniList (opcional)</h2>
     <div id="al-status" class="muted">Comprobando…</div>
     <details id="al-setup">
       <summary>Configurar (solo la primera vez, 2 minutos)</summary>
@@ -56,9 +69,17 @@
       <button id="al-import-manga">Importar mi lista de manga</button>
       <button id="al-import-anime">Importar mi lista de anime</button>
     </div>
-    <p id="al-msg"></p>
+    <div id="al-export-section" hidden>
+      <h3>Subir de la extensión a AniList</h3>
+      <p>Envía tus capítulos, episodios y estados guardados aquí a tu lista de AniList. Si una serie no está en tu lista, se añadirá. El progreso local sustituirá al de AniList.</p>
+      <button id="al-export" class="primary">Subir mi progreso a AniList</button>
+      <p id="al-export-summary" class="muted"></p>
+      <div id="al-unlinked"></div>
+    </div>
+    <p id="al-msg" role="status"></p>
   </section>
 
+  <script src="../lib/i18n.js"></script>
   <script src="../lib/parser.js"></script>
   <script src="../lib/store.js"></script>
   <script src="../lib/anilist.js"></script>
