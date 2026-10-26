@@ -17,7 +17,7 @@ vm.runInNewContext(fs.readFileSync('content.js', 'utf8'), {
   MutationObserver: class { constructor(callback) { mutation = callback; } observe() {} },
   setTimeout(callback) { pending = callback; return 1; },
   setInterval(callback) { poll = callback; },
-  chrome: { runtime: { async sendMessage(message) { messages.push(message); } } }
+  chrome: { runtime: { onMessage: { addListener() {} }, async sendMessage(message) { messages.push(message); } } }
 });
 function flush() { const callback = pending; pending = null; callback?.(); }
 flush();

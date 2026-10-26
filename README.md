@@ -61,6 +61,20 @@ options/             sincronización, copia de seguridad y AniList
 test/                tests del parser
 ```
 
+## Vinculación desde el popup (0.5.1)
+
+**Subir a AniList** también funciona si todas las series están sin vincular. Envía las vinculadas y muestra las pendientes para elegir su ficha con búsqueda editable y portada. Cada selección vincula la serie y envía su progreso actual, conservando la protección frente a conflictos. Puedes posponerlo con **Ahora no**. Cada serie sin vincular tiene además su propio botón **Vincular y subir a AniList** en la biblioteca.
+
+## Biblioteca, historial y protección de AniList (0.5.0)
+
+- **Continuar leyendo** en cada serie abre el último capítulo guardado. Las series importadas sin URL muestran el botón desactivado hasta que abras un capítulo.
+- Al guardar un avance automático aparece un aviso en el lector durante 12 segundos con **Deshacer**. Recupera el progreso y la URL anteriores. No permite deshacer por encima de avances posteriores. La detección corregida no vuelve a aplicarse automáticamente; puedes marcarla manualmente si lo deseas.
+- Antes de cada envío se consulta AniList. Si allí el progreso es superior, se conserva y aparece un conflicto en **Mis series**. Puedes **Conservar AniList** o **Sobrescribir AniList**, con confirmación. Se comprueba de nuevo el progreso remoto al resolverlo. Una recuperación local puede dejar un conflicto pendiente si el avance ya se había enviado.
+- La biblioteca muestra portadas de AniList, con icono de respaldo y filtros por tipo y estado. Las portadas se obtienen al vincular, importar o sincronizar.
+- **Historial de lectura** por serie registra visitas y cambios de progreso, incluidos los manuales, automáticos e importados. Permite recuperar el progreso anterior a un cambio. Se conservan los últimos 100 registros por serie en este navegador; el historial no se sincroniza entre equipos ni se incluye en las copias JSON de series.
+
+Pruebas: `node test/parser.test.js`, `node test/sync.test.js`, `node test/content.test.js` y `node test/i18n.test.js`. Las pruebas de AniList simulan su API.
+
 ## Navegación automática (0.4.0)
 
 Con **Guardar automáticamente** activado, abrir un capítulo posterior de una serie guardada actualiza el progreso y lo envía a AniList si está vinculada y conectada. También detecta cambios sin recarga en URL, título, encabezado y selectores de capítulo/episodio. No necesitas abrir el popup. Pasar a otra página dentro del mismo capítulo no suma capítulos, y volver atrás no reduce el progreso. Se conserva el límite de seguridad de 100 capítulos por salto y no se avanza en series terminadas.

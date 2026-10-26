@@ -19,6 +19,8 @@
     <button id="btn-sync">Sincronizar</button>
   </section>
 
+  <section id="link-pending" class="card" hidden aria-live="polite"></section>
+
   <section id="current" class="card">
     <p class="muted">Analizando la página…</p>
   </section>
@@ -30,6 +32,12 @@
         <option value="">Todo</option>
         <option value="manga">Manga</option>
         <option value="anime">Anime</option>
+      </select>
+      <select id="filter-status" aria-label="Estado de lectura">
+        <option value="">Todos los estados</option>
+        <option value="reading">Leyendo</option>
+        <option value="paused">En pausa</option>
+        <option value="completed">Terminado</option>
       </select>
     </div>
     <input id="search" type="search" placeholder="Buscar…">
@@ -55,7 +63,7 @@
         </select>
       </div>
       <div class="row small">
-        <a href="#" class="open-last">Abrir último guardado</a>
+        <a href="#" class="open-last">Continuar leyendo</a>
         <span class="anilist"></span>
       </div>
       <div class="anilist-results"></div>

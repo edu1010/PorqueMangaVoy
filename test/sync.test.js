@@ -20,9 +20,14 @@ global.chrome = {
   runtime: { onMessage: { addListener(fn) { listener = fn; } } }
 };
 let requests = [];
+let remoteProgress = 0;
 global.fetch = async (url, options) => {
-  requests.push(JSON.parse(options.body));
-  return { ok: true, async json() { return { data: { SaveMediaListEntry: { progress: requests.at(-1).variables.p } } }; } };
+  const request = JSON.parse(options.body);
+  requests.push(request);
+  if (request.query.includes('mutation')) remoteProgress = request.variables.p;
+  return { ok: true, async json() { return { data: request.query.includes('mutation')
+    ? { SaveMediaListEntry: { progress: remoteProgress } }
+    : { Media: { mediaListEntry: { progress: remoteProgress, status: 'CURRENT' }, coverImage: { medium: 'https://example.com/cover.jpg' } } } }; } };
 };
 const one = { id: 'one', title: 'One Piece', kind: 'manga', progress: 1164, status: 'reading', anilistId: 30013 };
 const page = parser.parsePage({ url: 'https://lectortmo.vip/manga/one-piece-s2/', title: '➤ Leer manga One Piece Online' });
@@ -75,6 +80,47 @@ async function run() {
   await store.save({ ...(await store.get('one')), autoTrack: true, status: 'completed' });
   await navigate('One Piece Capítulo 1167');
   assert.equal((await store.get('one')).progress, 1166, 'Respeta las series terminadas');
+  const send = (message) => new Promise((resolve) => listener(message, {}, resolve));
+  await store.save({ ...(await store.get('one')), status: 'reading' });
+  const latest = (await store.getHistory('one')).find((e) => e.reason === 'auto');
+  assert.ok((await store.getHistory('one')).some((e) => e.reason === 'visit' && e.chapter === 1164), 'Guarda visitas a capítulos anteriores sin bajar el progreso');
+  const undone = await send({ type: 'restore-progress', id: 'one', entryId: latest.id, undo: true });
+  assert.equal(undone.ok, true);
+  assert.equal(undone.conflict, true, 'Deshacer no reduce AniList sin confirmación');
+  assert.equal((await store.get('one')).progress, 1165);
+  await navigate('One Piece Capítulo 1166');
+  assert.equal((await store.get('one')).progress, 1165, 'No reaplica una detección corregida');
+  const staleUndo = await send({ type: 'restore-progress', id: 'one', entryId: latest.id, undo: true });
+  assert.ok(staleUndo.error, 'Deshacer viejo no borra cambios posteriores');
+  const overwritten = await send({ type: 'resolve-conflict', id: 'one', choice: 'local', remoteProgress: 1166 });
+  assert.equal(overwritten.conflict, false);
+  assert.equal(remoteProgress, 1165);
+  remoteProgress = 1170;
+  const batch = await send({ type: 'sync-anilist' });
+  assert.equal(batch.count, 0);
+  assert.deepEqual(batch.conflicts, ['one']);
+  assert.equal(remoteProgress, 1170, 'No sobrescribe progreso remoto superior');
+  remoteProgress = 1171;
+  const changedRemote = await send({ type: 'resolve-conflict', id: 'one', choice: 'local', remoteProgress: 1170 });
+  assert.equal(changedRemote.conflict, true, 'Revisa de nuevo AniList antes de sobrescribir');
+  assert.equal(remoteProgress, 1171);
+  const accepted = await send({ type: 'resolve-conflict', id: 'one', choice: 'remote' });
+  assert.equal(accepted.ok, true);
+  assert.equal((await store.get('one')).progress, 1171);
+  assert.equal((await store.get('one')).lastUrl, null, 'No asocia progreso remoto a una URL antigua');
+  assert.equal((await store.get('one')).coverImage, 'https://example.com/cover.jpg');
+  assert.equal((await store.getHistory('one'))[0].reason, 'anilist');
+  await store.save({ id: 'new', title: 'Chainsaw Man', kind: 'manga', progress: 7, status: 'reading' });
+  remoteProgress = 0;
+  const linked = await send({ type: 'link-anilist', id: 'new', mediaId: 105778,
+    coverImage: 'https://example.com/cover.jpg', titles: ['Chainsaw Man'] });
+  assert.equal(linked.ok, true);
+  assert.equal((await store.get('new')).anilistId, 105778);
+  assert.equal(remoteProgress, 7, 'Al vincular envía el progreso actual de la serie');
+  assert.ok((await store.get('new')).aliases.includes('chainsaw man'));
+  const relink = await send({ type: 'link-anilist', id: 'new', mediaId: 999 });
+  assert.ok(relink.error, 'Una selección obsoleta no cambia una vinculación existente');
+  console.log('OK: historial, recuperación, deshacer obsoleto, detecciones corregidas, portadas y conflictos remotos.');
   console.log('OK: reconocimiento parcial, tipos, ambigüedad, estados, fallo/reintento y seguimiento automático.');
 }
 run().catch((err) => { console.error(err); process.exitCode = 1; });

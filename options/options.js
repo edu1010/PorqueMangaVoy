@@ -94,10 +94,11 @@ async function importFromAnilist(kind) {
       } else if ((entry.progress || 0) > (series.progress || 0)) {
         series.progress = entry.progress;
         updated++;
-      } else if (series.anilistId === entry.media.id) {
+      } else if (series.anilistId === entry.media.id && series.coverImage === entry.media.coverImage?.medium) {
         continue;
       }
       series.anilistId = entry.media.id;
+      series.coverImage = entry.media.coverImage?.medium || series.coverImage || null;
       if (entry.status === 'PAUSED') series.status = 'paused';
       for (const k of keys) store.learnSource(series, { titleKey: k });
       changed.push(series);
@@ -152,6 +153,7 @@ async function renderExport() {
               const current = await store.get(s.id);
               if (!current) throw new Error(t('Esta serie ya no está guardada.'));
               current.anilistId = media.id;
+              current.coverImage = media.coverImage?.medium || null;
               for (const name of [media.title.english, media.title.romaji].filter(Boolean)) {
                 store.learnSource(current, { titleKey: parser.normalizeTitle(name) });
               }
@@ -177,6 +179,7 @@ $('#al-export').onclick = async () => {
     const result = await chrome.runtime.sendMessage({ type: 'sync-anilist' });
     const unlinked = (await store.getAll()).filter((s) => !s.anilistId).length;
     message($('#al-msg'), t`${result.count} series subidas a AniList.${unlinked ? t` ${unlinked} sin subir: necesitan vincularse primero.` : ''}${result.errors.length ? t(' Errores: ') + result.errors.map(i18n.error).join('; ') : ''}`, Boolean(result.errors.length));
+    if (result.conflicts?.length) message($('#al-msg'), t('Hay conflictos con AniList. Revísalos en Mis series.'), true);
   } catch (err) { message($('#al-msg'), err.message, true); }
   finally { await renderExport(); }
 };

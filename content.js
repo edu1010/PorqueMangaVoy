@@ -2,6 +2,46 @@
 (() => {
   let lastSnapshot = '';
   let timer;
+  let notice;
+  chrome.runtime.onMessage.addListener((message) => {
+    if (message.type !== 'progress-saved') return;
+    showNotice(message);
+  });
+  async function showNotice(message) {
+    const { i18n } = globalThis.PMV;
+    await i18n.init();
+    const { t } = i18n;
+    notice?.remove();
+    const host = document.createElement('div');
+    notice = host;
+    const shadow = host.attachShadow({ mode: 'closed' });
+    const style = document.createElement('style');
+    style.textContent = ':host{all:initial;position:fixed;bottom:20px;right:20px;z-index:2147483647}div{font:14px/1.5 system-ui;max-width:340px;padding:12px 16px;border-radius:12px;background:#24233b;color:#fff;box-shadow:0 4px 24px #0005}button{font:inherit;margin-left:10px;border:0;border-radius:6px;background:#ddd9ff;color:#252044;padding:5px 9px;cursor:pointer}';
+    const box = document.createElement('div');
+    box.setAttribute('role', 'status');
+    const label = document.createElement('span');
+    label.textContent = t`${message.title} · ${message.kind === 'anime' ? t('episodio') : t('capítulo')} ${message.progress} guardado`;
+    const undo = document.createElement('button');
+    undo.textContent = t('Deshacer');
+    undo.onclick = async () => {
+      undo.disabled = true;
+      clearTimeout(dismiss);
+      try {
+        const result = await chrome.runtime.sendMessage({ type: 'restore-progress', id: message.id, entryId: message.entryId, undo: true });
+        if (result.error) throw new Error(result.error);
+        label.textContent = t('Progreso recuperado.') + (result.conflict ? ' ' + t('Revisa el conflicto con AniList en la extensión.') : result.syncError ? ' ' + i18n.error(result.syncError) : '');
+        undo.remove();
+      } catch (err) { label.textContent = i18n.error(err.message); undo.disabled = false; }
+    };
+    const close = document.createElement('button');
+    close.textContent = '×';
+    close.setAttribute('aria-label', t('Cerrar'));
+    close.onclick = () => host.remove();
+    box.append(label, undo, close);
+    shadow.append(style, box);
+    document.documentElement.append(host);
+    const dismiss = setTimeout(() => host.remove(), 12000);
+  }
   function report() {
     timer = null;
     if (document.visibilityState === 'hidden') return;

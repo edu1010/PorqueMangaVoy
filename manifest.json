@@ -1,14 +1,14 @@
 {
   "manifest_version": 3,
   "name": "PorqueMangaVoy",
-  "version": "0.4.0",
+  "version": "0.5.1",
   "default_locale": "en",
   "description": "__MSG_description__",
   "permissions": ["storage", "tabs", "activeTab", "scripting", "identity"],
   "host_permissions": ["https://graphql.anilist.co/*"],
   "content_scripts": [{
     "matches": ["https://*/*", "http://*/*"],
-    "js": ["content.js"],
+    "js": ["lib/i18n.js", "content.js"],
     "run_at": "document_idle"
   }],
   "background": {

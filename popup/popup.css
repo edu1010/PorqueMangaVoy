@@ -90,3 +90,16 @@ h1 { display: flex; align-items: center; gap: 7px; }
 .big b { font-size: 30px; }
 button:disabled { opacity: .6; cursor: default; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.list-head { gap: 6px; flex-wrap: wrap; }
+#list { max-height: 330px; }
+#list li { display: block; padding: 12px 0; }
+.library-main { display: flex; align-items: flex-start; gap: 10px; }
+.cover { width: 48px; height: 68px; object-fit: cover; border-radius: 6px; background: var(--bg); }
+.history-row { display: flex; gap: 8px; justify-content: space-between; align-items: center; padding: 6px 0; border-top: 1px solid var(--border); }
+.history-row span { font-size: 11px; }
+.history-row button { flex-shrink: 0; }
+.conflict { padding: 10px; margin-top: 8px; border: 1px solid #b98328; border-radius: 8px; }
+.conflict p { margin: 0 0 8px; }
+.conflict button { margin: 2px; }
+#link-pending > select { width: 100%; }
+#link-pending input { flex: 1; min-width: 0; width: 100%; }
