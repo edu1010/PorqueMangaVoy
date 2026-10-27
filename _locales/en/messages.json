@@ -1,4 +1,11 @@
 {
-  "description": { "message": "Track your manga chapters and anime episodes on any site. Sync across computers and optionally with AniList." },
-  "openExtension": { "message": "Open PorqueMangaVoy" }
+  "appName": {
+    "message": "PorqueMangaVoy – Manga & Anime Tracker"
+  },
+  "description": {
+    "message": "Remember the last manga chapter and anime episode you read on any site. Auto-saves progress, syncs across PCs and with AniList."
+  },
+  "openExtension": {
+    "message": "Open PorqueMangaVoy"
+  }
 }

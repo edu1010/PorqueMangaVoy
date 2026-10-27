@@ -1,4 +1,11 @@
 {
-  "description": { "message": "Recuerda por qué capítulo de manga o episodio de anime vas, en cualquier web. Sincroniza entre PCs y opcionalmente con AniList." },
-  "openExtension": { "message": "Abrir PorqueMangaVoy" }
+  "appName": {
+    "message": "PorqueMangaVoy – Seguimiento de manga y anime"
+  },
+  "description": {
+    "message": "Recuerda por qué capítulo de manga o episodio de anime vas en cualquier web. Guarda solo, sincroniza entre PCs y con AniList."
+  },
+  "openExtension": {
+    "message": "Abrir PorqueMangaVoy"
+  }
 }
