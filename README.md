@@ -105,3 +105,11 @@ Validación local: `node test/parser.test.js` y `node test/sync.test.js` (API de
 - Reglas específicas para webs concretas que fallen (se añaden en `parser.js`).
 - Menú contextual «Marcar como leído» y avisos de nuevos capítulos.
 - Publicar en Chrome Web Store / AMO para tener un ID fijo y sincronización estable.
+
+## Licencia / License
+
+Copyright (C) 2026 [edu1010](https://github.com/edu1010).
+
+PorqueMangaVoy es software libre bajo la [GNU GPL v3.0](LICENSE), con un término adicional de atribución según la sección 7(b): cualquier copia o versión modificada debe mantener visible el aviso «Based on PorqueMangaVoy by edu1010 (https://github.com/edu1010/PorqueMangaVoy)». Detalles en [NOTICE](NOTICE).
+
+PorqueMangaVoy is free software licensed under the [GNU GPL v3.0](LICENSE), with an additional attribution term under section 7(b): any copy or modified version must keep the notice "Based on PorqueMangaVoy by edu1010 (https://github.com/edu1010/PorqueMangaVoy)" visible to users. See [NOTICE](NOTICE).
